@@ -1,0 +1,21 @@
+{
+  "name": "income-expense-tracker",
+  "version": "1.0.0",
+  "description": "In this project we are going to build the application using which we can able to track down the income and the expenses that we have made.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "income",
+    "expence",
+    "gtracker"
+  ],
+  "author": "Prajwal Patil",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^8.0.2"
+  }
+}
