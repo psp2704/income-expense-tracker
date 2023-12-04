@@ -14,7 +14,7 @@ app.get('/', async (req, res) =>{
     }
 });
 
-//user
+//user    
 
 app.use('/api/v1/users', userRouter);
 
@@ -22,7 +22,7 @@ app.use('/api/v1/users', userRouter);
 
 //transaction
 
-//error handling
+//error handling    
 
 //listen to the server
 
