@@ -1,2 +1,2 @@
 # income-expense-tracker
-In this project we are going to build the application using which we can able to track down the income and the expenses that we have made.
+In this project we afre going to build the income expense tracker. In sthsi application we can able to track down the all income and expense that we have made for period of time.
