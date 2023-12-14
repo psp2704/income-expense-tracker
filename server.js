@@ -1,3 +1,4 @@
+require('./config/dbConnect')
 const express = require('express');
 const userRouter = require('./routes/users/userRouter');
 const transactionRouter = require('./routes/transactions/transactionRouter');
@@ -22,13 +23,9 @@ app.get('/', async (req, res)=>{
 //user
 //user register
 
-
 //accouts
 
 //transaction
-
-
-
 
 //error handling    
 
