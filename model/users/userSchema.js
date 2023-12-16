@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema ({
     fullname : {
         type : String,
         required : true
@@ -17,12 +17,12 @@ const userSchema = new mongoose.Schema({
     },
 
     accounts : [{
-        type : mongoose.Schema.Types.ObjectId, ref : "Account",
-        default : false
-
-    }]    
-},{
-    timestamps : true
+        type : mongoose.Schema.Types.ObjectId, 
+        ref:"Account"
+    }]
+}, {
+    timestamps :true,
+    toJSON : {virtuals : true}
 });
 
 
