@@ -5,6 +5,7 @@ const transactionRouter = require('./routes/transactions/transactionRouter');
 const accountRouter = require('./routes/accounts/accountRouter')
 
 const app = express();
+app.use(express.json());
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/accounts', accountRouter);
 app.use('/api/v1/transactions' , transactionRouter)
