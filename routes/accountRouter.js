@@ -1,5 +1,5 @@
 const express = require('express');
-const { createAccount, allAccount, singleAccount, updateAccount, deleteAccount } = require('../../controller/accounts/accountCtrl');
+const { createAccount, allAccount, singleAccount, updateAccount, deleteAccount } = require('../controller/accountCtrl');
 
 const accountRouter = express.Router();
 

@@ -1,8 +1,9 @@
 require('./config/dbConnect')
 const express = require('express');
-const userRouter = require('./routes/users/userRouter');
-const transactionRouter = require('./routes/transactions/transactionRouter');
-const accountRouter = require('./routes/accounts/accountRouter')
+const userRouter = require('./routes/userRouter');
+const transactionRouter = require('./routes/transactionRouter');
+const accountRouter = require('./routes/accountRouter');
+const globalErrorHandler = require('./middleware/globalErrorHnadler');
 
 const app = express();
 app.use(express.json());
@@ -29,7 +30,7 @@ app.get('/', async (req, res)=>{
 //transaction
 
 //error handling    
-
+app.use(globalErrorHandler)
 //listen to the server
 
 const PORT = process.env.PORT || 7000;
