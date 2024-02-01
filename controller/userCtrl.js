@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/userSchema");
 const { appErr } = require("../utils/appErr");
 const { generateToken } = require("../utils/generateToken");
+const { verifyToken } = require("../utils/verifyToken");
 
 const userRegister = async (req, res, next) => {
   try {
@@ -82,6 +83,7 @@ const userLogin = async (req, res, next) => {
 
     return res.json(
       { 
+        id : userFound._id,
         msg: "User logged in successfully",
         token : generateToken(userFound._id)
       });
@@ -97,7 +99,15 @@ const userLogin = async (req, res, next) => {
 //get single user profile
 const getUserProfile = async (req, res) => {
   try {
-    res.send({ msg: "get the user" });
+    //get the token from headers
+    const token = req.headers['authorization'].split(' ')[1];
+
+    //verify token
+    const result = verifyToken(token);
+
+    //send the result
+    res.send({ msg: "get the user", res : result});
+    
   } catch (error) {
     console.log(error);
   }
@@ -105,8 +115,17 @@ const getUserProfile = async (req, res) => {
 
 // update the user
 const updateUser = async (req, res) => {
+ const {userId} = req.body;
+
   try {
-    res.send({ msg: "find/update the user" });
+    //get the user
+    const userFound = await User.findById('6597ed778c0cd3bdec69c604');
+
+    if(!userFound){
+      return next(appErr('Invalid user request', 400))
+    }
+
+    res.send({ msg: "find/update the user" ,data : userFound});
   } catch (error) {
     console.log(error);
   }
