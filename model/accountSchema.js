@@ -10,8 +10,16 @@ const accountSchema = new mongoose.Schema({
     accountType : {
         type : String,
         enum : [
-            "Svaing",
-            "Travel"
+            "Saving",
+            "Travel",
+            "Investment",
+            "Checking",
+            "Building",
+            "School",
+            "Utilities",
+            "Loan",
+            "Cash",
+            "Groceries"
         ]
     },
 
@@ -41,4 +49,4 @@ const accountSchema = new mongoose.Schema({
 
 const Account = mongoose.model('Account', accountSchema);
 
-module.exportss = Account;
+module.exports = Account;

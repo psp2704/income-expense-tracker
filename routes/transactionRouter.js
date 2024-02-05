@@ -6,22 +6,25 @@ const {
   deleteTransaction,
   updateTransaction,
 } = require("../controller/transactionCtrl");
+const { isLogin } = require("../middleware/isLogin");
 
+// Create a router instance for handling transaction-related routes
 const transactionRouter = express.Router();
 
-//create transaction
-transactionRouter.post("/", createTransaction);
+// Endpoint to create a new transaction
+transactionRouter.post("/", isLogin, createTransaction);
 
-//get transaction
+// Endpoint to get a single transaction by ID
 transactionRouter.get("/:id", getSingleTransaction);
 
-//get all  transaction
+// Endpoint to get all transactions
 transactionRouter.get("/", allTransaction);
 
-//delete transaction
+// Endpoint to delete a transaction by ID
 transactionRouter.delete("/:id", deleteTransaction);
 
-//update transaction
+// Endpoint to update a transaction by ID
 transactionRouter.put("/:id", updateTransaction);
 
+// Export the module for the transaction router
 module.exports = transactionRouter;

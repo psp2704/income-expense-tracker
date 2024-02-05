@@ -1,23 +1,24 @@
 const express = require('express');
 const { createAccount, allAccount, singleAccount, updateAccount, deleteAccount } = require('../controller/accountCtrl');
+const { isLogin } = require('../middleware/isLogin');
 
+// Create a router instance for handling account-related routes
 const accountRouter = express.Router();
 
-//create account
-accountRouter.post('/', createAccount);
+// Endpoint to create a new account
+accountRouter.post('/',isLogin, createAccount);
 
-//all account
+// Endpoint to get all accounts
 accountRouter.get('/', allAccount);
 
-//single account
-accountRouter.get('/:id', singleAccount)
+// Endpoint to get a single account by ID
+accountRouter.get('/:id', singleAccount);
 
-//update account
-accountRouter.put('/:id', updateAccount)
+// Endpoint to update an account by ID
+accountRouter.put('/:id', updateAccount);
 
+// Endpoint to delete an account by ID
+accountRouter.delete('/:id', deleteAccount);
 
-accountRouter.delete('/:id', deleteAccount)
-
-
-
+// Export the module for the account router
 module.exports = accountRouter;

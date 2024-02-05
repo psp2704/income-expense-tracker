@@ -8,23 +8,23 @@ const {
 } = require('../controller/userCtrl');
 const { isLogin } = require("../middleware/isLogin");
 
+// Create a router instance for handling user-related routes
 const userRouter = express.Router();
 
-//user register
+// Endpoint for user registration
 userRouter.post("/register", userRegister);
 
-//user login
+// Endpoint for user login, with authentication middleware (isLogin)
 userRouter.post("/login", isLogin, userLogin);
 
-//get single user profile
-userRouter.get("/profile/:id", getUserProfile);
+// Endpoint to get a single user's profile, with authentication middleware (isLogin)
+userRouter.get("/profile", isLogin, getUserProfile);
 
-//update user
+// Endpoint to update a user's information
 userRouter.put("/:id", updateUser);
 
-//delete user
+// Endpoint to delete a user
 userRouter.delete("/:id", deleteUser);
 
-
-//export the module for the user router
+// Export the module for the user router
 module.exports = userRouter;
