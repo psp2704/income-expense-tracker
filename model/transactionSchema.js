@@ -22,11 +22,19 @@ const transactionSchema = new mongoose.Schema({
         
     },
 
-    caategory : {
+    category : {
         type : String,
         enum : [
-            "Svaing",
-            "Travel"
+            "Saving",
+            "Travel",
+            "Investment",
+            "Checking",
+            "Building",
+            "School",
+            "Utilities",
+            "Loan",
+            "Cash",
+            "Groceries"
         ],
         required : true
     },
@@ -37,7 +45,8 @@ const transactionSchema = new mongoose.Schema({
 
     createdBy : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'User'
+        ref : 'User',
+        required : true
     },
 
     date : {
@@ -57,4 +66,4 @@ const transactionSchema = new mongoose.Schema({
 
 const Transaction = mongoose.model('Transaction', transactionSchema);
 
-module.exportss = Transaction;
+module.exports = Transaction;

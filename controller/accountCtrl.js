@@ -1,9 +1,35 @@
+const User = require("../model/userSchema");
+const { appErr } = require("../utils/appErr");
+const Account = require("../model/accountSchema");
+
 //create account
-const createAccount =  async (req, res)=>{
+const createAccount =  async (req, res, next)=>{
     try {
-        res.send({msg : 'create account'})
+        const  {name, accountType, initialBalance, notes} = req.body;
+        //1 find user
+        const userFound = await User.findById(req.user);
+
+        if(!userFound){
+           return next(appErr('No user found', 401))
+        }
+
+        //2 create accout
+        const account = await Account.create({
+            name,
+            accountType,
+            initialBalance,
+            notes
+        });
+
+        //3 push the account in the user
+         userFound.accounts.push(account._id)
+
+         //4 resave the user
+         await userFound.save();
+
+        res.json({msg : 'success', res : userFound})
     } catch (error) {
-        res.json(error)
+        return next(appErr(error.message, 401))
     }
 };
 
