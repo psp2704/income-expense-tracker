@@ -20,13 +20,13 @@ const createAccount =  async (req, res, next)=>{
             initialBalance,
             notes
         });
-
+            
         //3 push the account in the user
-         userFound.accounts.push(account._id)
+         userFound.accounts.push(account._id);
 
          //4 resave the user
          await userFound.save();
-
+        
         res.json({msg : 'success', res : userFound})
     } catch (error) {
         return next(appErr(error.message, 401))
@@ -36,9 +36,10 @@ const createAccount =  async (req, res, next)=>{
 //get all account
 const allAccount = async (req, res)=>{
     try {
-        res.send({msg : 'all account'})
+        const accounts = await Account.find({});
+        res.send({msg : 'Success', data : accounts,})
     } catch (error) {
-        res.json(error)
+        return next(appErr(error.message, 402))
     }
 };
 

@@ -15,7 +15,7 @@ const userRouter = express.Router();
 userRouter.post("/register", userRegister);
 
 // Endpoint for user login, with authentication middleware (isLogin)
-userRouter.post("/login", isLogin, userLogin);
+userRouter.post("/login", userLogin);
 
 // Endpoint to get a single user's profile, with authentication middleware (isLogin)
 userRouter.get("/profile", isLogin, getUserProfile);

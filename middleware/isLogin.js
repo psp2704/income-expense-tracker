@@ -2,22 +2,22 @@ const { appErr } = require("../utils/appErr");
 const { getTokenFromHeader } = require("../utils/getTokenFromHeader");
 const { verifyToken } = require("../utils/verifyToken");
 
-
-const isLogin = (req, res, next) =>{
-
+// Middleware function to check if user is logged in
+const isLogin = (req, res, next) => {
+    // Extract token from request header
     const token = getTokenFromHeader(req);
-    console.log(token)
+    // Verify token
     const decoded = verifyToken(token);
-    console.log(decoded)
+    // Set user ID in request object
     req.user = decoded.id;
-    if(!decoded) {
-        return next ( appErr('token expired, login again' , 401))
+    // If token is not valid or expired, return an error response
+    if (!decoded) {
+        return next(appErr('Token expired, login again', 401));
     }
-
+    // Move to the next middleware or route handler
     next();
-}
-
+};
 
 module.exports = {
     isLogin
-}
+};
