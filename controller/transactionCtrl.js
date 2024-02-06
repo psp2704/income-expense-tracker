@@ -9,36 +9,42 @@ const createTransaction = async (req, res, next) => {
     const { name, transactionType, amount, category, notes, account } =
       req.body;
 
+    //1 find the user
     const userFound = await User.findById(req.user);
-
     if (!userFound) {
-      return next(appErr("user not found", 404));
+      return next(appErr("user not found", 402));
     }
 
+    //2. find the account
     const accountFound = await Account.findById(account);
-
-    if (!userFound) {
-      return next(appErr("account not found", 404));
+    if (!accountFound) {
+      return next(appErr("account not found", 402));
     }
 
-    const transacion = await Transaction.create({
+    const transaction = await Transaction.create({
       name,
       transactionType,
       amount,
       category,
       notes,
       account,
-      createdBy : userFound._id
+      createdBy: req.user,
     });
 
-    accountFound.push(transacion._id);
+    //3 pust  the transaction into accout 
+    accountFound.transactionData.push(transaction._id);
 
-    await accountFound.save();
+    //4 save the account
+    accountFound.save();
 
-    res.send({ msg: "Success", data : transaction });
+    res.json({
+      msg : "Success",
+      data : transaction
+    })
   } catch (error) {
-    return next ( appErr(error.message, 401))
+    return next(appErr(error.message, 404));
   }
+
 };
 
 //get transaction
