@@ -7,7 +7,7 @@ const globalErrorHandler = require('./middleware/globalErrorHnadler');
 
 const app = express();
 app.use(express.json());
-app.use('/api/v1/users', userRouter);
+app.use('/api/v1/user', userRouter);
 app.use('/api/v1/accounts', accountRouter);
 app.use('/api/v1/transactions' , transactionRouter)
 //middlewares

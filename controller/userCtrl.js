@@ -77,8 +77,14 @@ const userLogin = async (req, res, next) => {
 const getUserProfile = async (req, res) => {
   try {
     // Retrieve user profile using the provided token
-    const user = await User.findById(req.user);
-    res.json({ msg: "Get the user", res: 'no token found', userData: user });
+    const user = await User.findById(req.user).populate({
+      path : 'accounts',
+      populate : {
+        path : 'transactionData',
+        model : 'Transaction'
+      }
+    });
+    res.json({ msg: "Get the user",  userData: user });
   } catch (error) {
     console.log(error);
   }
@@ -86,21 +92,58 @@ const getUserProfile = async (req, res) => {
 
 // Update the user
 const updateUser = async (req, res, next) => {
-  const { userId } = req.body;
-
   try {
     // Get the user by ID
-    const userFound = await User.findById(userId);
-
+    const userFound = await User.findById(req.user);
     if (!userFound) {
       return next(appErr('Invalid user request', 400));
     }
 
-    res.send({ msg: "Find/update the user", data: userFound });
+    if (req.body.email) {
+      // Check if the email already exists in the database
+      const existingUser = await User.findOne({ email: req.body.email });
+      if (existingUser && existingUser._id.toString() !== req.user) {
+        // If email exists and belongs to a different user, throw an error
+        return next(appErr('Email already exists', 400));
+      }
+    }
+
+    if(req.body.email) {
+      const userEmail = userFound.email;
+
+      const userExists = await User.find({email : req.body.email});
+      if(userEmail === req.body.email || userExists){
+        return next(appErr('Email already exists' , 400))
+      }
+    }
+
+    // Update password if provided
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPass = await bcrypt.hash(req.body.password, salt);
+      const user = await User.findByIdAndUpdate(req.user, {
+        password: hashedPass,
+      }, {
+        new: true,
+        runValidators: true
+      });
+
+      return res.json({ msg: 'Success', data: user });
+    }
+
+    // Update user data
+    const user = await User.findByIdAndUpdate(req.user, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    return res.json({ msg: "Success", data: user });
+
   } catch (error) {
-    console.log(error);
+    return next(appErr(error.message , 400)); // Pass error to error handling middleware
   }
 };
+
 
 // Delete user
 const deleteUser = async (req, res) => {

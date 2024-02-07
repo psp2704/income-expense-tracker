@@ -18,7 +18,8 @@ const createAccount =  async (req, res, next)=>{
             name,
             accountType,
             initialBalance,
-            notes
+            notes,
+            createdBy : req.user
         });
             
         //3 push the account in the user
@@ -27,7 +28,7 @@ const createAccount =  async (req, res, next)=>{
          //4 resave the user
          await userFound.save();
         
-        res.json({msg : 'success', res : userFound})
+        res.json({msg : 'success', res : account})
     } catch (error) {
         return next(appErr(error.message, 401))
     }
@@ -36,7 +37,9 @@ const createAccount =  async (req, res, next)=>{
 //get all account
 const allAccount = async (req, res)=>{
     try {
-        const accounts = await Account.find({});
+        const accounts = await Account.find({}).populate({
+            path : 'transactionData'
+        });
         res.send({msg : 'Success', data : accounts,})
     } catch (error) {
         return next(appErr(error.message, 402))
