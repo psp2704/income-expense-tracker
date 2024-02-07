@@ -21,7 +21,7 @@ userRouter.post("/login", userLogin);
 userRouter.get("/profile", isLogin, getUserProfile);
 
 // Endpoint to update a user's information
-userRouter.put("/:id", updateUser);
+userRouter.put("/", isLogin, updateUser);
 
 // Endpoint to delete a user
 userRouter.delete("/:id", deleteUser);
