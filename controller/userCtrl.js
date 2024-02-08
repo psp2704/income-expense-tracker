@@ -2,7 +2,6 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/userSchema");
 const { appErr } = require("../utils/appErr");
 const { generateToken } = require("../utils/generateToken");
-const { verifyToken } = require("../utils/verifyToken");
 
 // User registration
 const userRegister = async (req, res, next) => {
@@ -99,20 +98,12 @@ const updateUser = async (req, res, next) => {
       return next(appErr('Invalid user request', 400));
     }
 
-    if (req.body.email) {
-      // Check if the email already exists in the database
-      const existingUser = await User.findOne({ email: req.body.email });
-      if (existingUser && existingUser._id.toString() !== req.user) {
-        // If email exists and belongs to a different user, throw an error
-        return next(appErr('Email already exists', 400));
-      }
-    }
-
+    //check if email exist or not
     if(req.body.email) {
       const userEmail = userFound.email;
 
       const userExists = await User.find({email : req.body.email});
-      if(userEmail === req.body.email || userExists){
+      if(userEmail === req.body.email || !userExists){
         return next(appErr('Email already exists' , 400))
       }
     }
@@ -148,7 +139,11 @@ const updateUser = async (req, res, next) => {
 // Delete user
 const deleteUser = async (req, res) => {
   try {
-    res.send({ msg: "Delete the user" });
+    const user = await User.findById(req.user);
+    res.json({
+      msg : 'Success',
+      data : user
+    })
   } catch (error) {
     console.log(error);
   }

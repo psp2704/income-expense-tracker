@@ -44,42 +44,48 @@ const createTransaction = async (req, res, next) => {
   } catch (error) {
     return next(appErr(error.message, 404));
   }
-
 };
 
 //get transaction
-const getSingleTransaction = async (req, res) => {
+const getSingleTransaction = async (req, res, next) => {
   try {
-    res.send({ msg: "get the transaction" });
+    const transaction = await Transaction.findById(req.params.id)
+    res.json({ msg: "Success", data : transaction });
   } catch (error) {
-    res.json(error);
+    return next(appErr(error.message, 402));
   }
 };
 
 //get all  transaction
-const allTransaction = async (req, res) => {
+const allTransaction = async (req, res, next) => {
   try {
-    res.send({ msg: "get all transaction" });
+    const transaction = await Transaction.findById()
+    res.json({ msg: "Success", data : transaction });
   } catch (error) {
-    res.json(error);
+    return next(appErr(error.message, 402));
   }
 };
 
 //update transaction
-const updateTransaction = async (req, res) => {
+const updateTransaction = async (req, res, next) => {
   try {
-    res.send({ msg: "update transacion" });
+    const transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
+      new : true,
+      runValidators : true
+    })
+    res.json({ msg: "Success", data : transaction });
   } catch (error) {
-    res.json(error);
+    return next(appErr(error.message, 402));
   }
 };
 
 //delete transaction
-const deleteTransaction = async (req, res) => {
+const deleteTransaction = async (req, res, next) => {
   try {
-    res.send({ msg: "delete transacion" });
+    const transaction = await Transaction.findByIdAndDelete(req.params.id)
+    res.json({ msg: "Transaction deleted Succesfully"});
   } catch (error) {
-    res.json(error);
+    return next(appErr(error.message, 402));
   }
 };
 
