@@ -24,7 +24,7 @@ userRouter.get("/profile", isLogin, getUserProfile);
 userRouter.put("/", isLogin, updateUser);
 
 // Endpoint to delete a user
-userRouter.delete("/:id", deleteUser);
+userRouter.delete("/",isLogin, deleteUser);
 
 // Export the module for the user router
 module.exports = userRouter;
