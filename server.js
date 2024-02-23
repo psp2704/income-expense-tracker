@@ -1,15 +1,18 @@
 require('./config/dbConnect')
 const express = require('express');
+const cors = require( 'cors' );
 const userRouter = require('./routes/userRouter');
 const transactionRouter = require('./routes/transactionRouter');
 const accountRouter = require('./routes/accountRouter');
 const globalErrorHandler = require('./middleware/globalErrorHnadler');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/accounts', accountRouter);
-app.use('/api/v1/transactions' , transactionRouter)
+app.use('/api/v1/transactions' , transactionRouter);
+
 //middlewares
 
 //routes
