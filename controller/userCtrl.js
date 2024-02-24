@@ -54,18 +54,18 @@ const userLogin = async (req, res, next) => {
     const userFound = await User.findOne({ email });
 
     if (!userFound) {
-      return next(appErr("Invalid Login Credentials - User not found", 400));
+      return next(appErr("Invalid Login Credentials", 400));
     }
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, userFound.password);
 
     if (!passwordMatch) {
-      return next(appErr("Invalid Login Credentials - Incorrect password", 400));
+      return next(appErr("Invalid Login Credentials", 400));
     }
 
     // Generate and return a token upon successful login
-    return res.json({ id: userFound._id, msg: "User logged in successfully", token: generateToken(userFound._id) });
+    return res.json({ id: userFound._id, status: "success", token: generateToken(userFound._id) });
   } catch (error) {
     console.log(error);
     return next(appErr(error.message, 400));
@@ -83,7 +83,7 @@ const getUserProfile = async (req, res) => {
         model : 'Transaction'
       }
     });
-    res.json({ msg: "Get the user",  userData: user });
+    res.json({ status: "success",  userData: user });
   } catch (error) {
     console.log(error);
   }
