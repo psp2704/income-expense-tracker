@@ -149,10 +149,24 @@ const deleteUser = async (req, res) => {
   }
 };
 
+
+const logoutUser = async (req, res) => {
+    try {
+      localStorage.removeItem("userAuth");
+      res.json({
+       message : "User Logged Out",
+       status : "success"
+      })
+    } catch (error) {
+      console.log(error);
+    }
+}
+
 module.exports = {
   userRegister,
   userLogin,
   getUserProfile,
   updateUser,
   deleteUser,
+  logoutUser
 };
