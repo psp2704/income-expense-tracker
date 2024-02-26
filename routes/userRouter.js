@@ -5,6 +5,7 @@ const {
   getUserProfile,
   updateUser,
   deleteUser,
+  logoutUser
 } = require('../controller/userCtrl');
 const { isLogin } = require("../middleware/isLogin");
 
@@ -25,6 +26,9 @@ userRouter.put("/", isLogin, updateUser);
 
 // Endpoint to delete a user
 userRouter.delete("/",isLogin, deleteUser);
+
+// Endpoint to logout a user
+userRouter.post("/logout", logoutUser);
 
 // Export the module for the user router
 module.exports = userRouter;
