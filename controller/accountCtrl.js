@@ -50,10 +50,17 @@ const allAccount = async (req, res, next) => {
 // Get single account
 const singleAccount = async (req, res, next) => {
   try {
-    const account = await Account.findById(req.params.id);
-    res.send({ msg: 'Success', data: account });
+    const account = await Account.findById(req.params.id).populate({
+      path : 'transactionData',
+      populate : {
+        path : 'createdBy',
+        model : 'User'
+      }
+    });
+
+    res.json({ status: 'success', account: account });
   } catch (error) {
-    return next(appErr(error.message, 402));
+    return next(appErr(error.message, 400));
   }
 };
 
