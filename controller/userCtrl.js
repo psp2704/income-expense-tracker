@@ -6,7 +6,7 @@ const { generateToken } = require("../utils/generateToken");
 // User registration
 const userRegister = async (req, res, next) => {
   try {
-    const { fullname, email, password } = req.body;
+    const { fullname, email, password, confirm_password} = req.body;
 
     // Check if the user already exists
     const userFound = await User.findOne({ email });
@@ -20,6 +20,11 @@ const userRegister = async (req, res, next) => {
       return next(appErr("All fields are required", 400));
     }
 
+    if (password !== confirm_password) {
+      return next(appErr("Password does not match!", 400));
+    }
+
+
     // Hash the password before storing in the database
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(password, salt);
@@ -31,10 +36,9 @@ const userRegister = async (req, res, next) => {
       password: hashedPass,
     });
 
-    return res.json({
-      msg: "Success",
-      id: user._id,
-    });
+    await user.save();
+
+    return res.json({ id: user._id, status: "success", token: generateToken(user._id) });
   } catch (error) {
     return next(appErr(error.message, 500));
   }
