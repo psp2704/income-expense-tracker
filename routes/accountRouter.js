@@ -9,16 +9,16 @@ const accountRouter = express.Router();
 accountRouter.post('/',isLogin, createAccount);
 
 // Endpoint to get all accounts
-accountRouter.get('/', allAccount);
+accountRouter.get('/',isLogin, allAccount);
 
 // Endpoint to get a single account by ID
-accountRouter.get('/:id', singleAccount);
+accountRouter.get('/:id',isLogin, singleAccount);
 
 // Endpoint to update an account by ID
-accountRouter.put('/:id', updateAccount);
+accountRouter.put('/:id',isLogin, updateAccount);
 
 // Endpoint to delete an account by ID
-accountRouter.delete('/:id', deleteAccount);
+accountRouter.delete('/:id',isLogin, deleteAccount);
 
 // Export the module for the account router
 module.exports = accountRouter;

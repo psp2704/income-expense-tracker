@@ -5,8 +5,14 @@ const Account = require("../model/accountSchema");
 // Create account
 const createAccount = async (req, res, next) => {
   try {
-    const { name, accountType, initialBalance, notes } = req.body;
+    const { accountName, accountType, initialBalance, notes } = req.body;
     
+    // check for input fields
+    if (!(accountName && accountType && initialBalance && notes)){
+      return next(appErr("All fields are Required", 400))
+    }
+
+
     // Find the user
     const userFound = await User.findById(req.user);
     
@@ -16,11 +22,11 @@ const createAccount = async (req, res, next) => {
 
     // Create the account
     const account = await Account.create({
-      name,
+      accountName,
       accountType,
       initialBalance,
       notes,
-      createdBy: req.user
+      createdBy: req.user 
     });
 
     // Push the account into the user's accounts array
@@ -29,7 +35,7 @@ const createAccount = async (req, res, next) => {
     // Save the updated user
     await userFound.save();
     
-    res.json({ msg: 'Success', res: account });
+    res.json({ status: 'success', account: account });
   } catch (error) {
     return next(appErr(error.message, 401));
   }
@@ -41,7 +47,7 @@ const allAccount = async (req, res, next) => {
     const accounts = await Account.find({}).populate({
       path: 'transactionData'
     });
-    res.send({ msg: 'Success', data: accounts });
+    res.send({ status: 'Success', data: accounts });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
@@ -71,7 +77,7 @@ const updateAccount = async (req, res, next) => {
       new: true,
       runValidators: true
     });
-    res.send({ msg: 'Update Success', data: account });
+    res.send({ status: 'Update Success', data: account });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
@@ -81,7 +87,7 @@ const updateAccount = async (req, res, next) => {
 const deleteAccount = async (req, res, next) => {
   try {
     await Account.findByIdAndDelete(req.params.id);
-    res.send({ msg: 'Account Deleted Successfully' });
+    res.send({ status: 'Account Deleted Successfully' });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
