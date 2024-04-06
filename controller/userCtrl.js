@@ -123,7 +123,7 @@ const updateUser = async (req, res, next) => {
         runValidators: true
       });
 
-      return res.json({ msg: 'Success', data: user });
+      return res.json({ status: "success", data: user });
     }
 
     // Update user data
@@ -132,7 +132,7 @@ const updateUser = async (req, res, next) => {
       runValidators: true
     });
 
-    return res.json({ msg: "Success", data: user });
+    return res.json({ status: "success", data: user });
 
   } catch (error) {
     return next(appErr(error.message , 400)); // Pass error to error handling middleware

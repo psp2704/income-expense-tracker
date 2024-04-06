@@ -77,7 +77,7 @@ const updateAccount = async (req, res, next) => {
       new: true,
       runValidators: true
     });
-    res.send({ status: 'Update Success', data: account });
+    res.send({ status: "success", data: account });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
@@ -87,7 +87,7 @@ const updateAccount = async (req, res, next) => {
 const deleteAccount = async (req, res, next) => {
   try {
     await Account.findByIdAndDelete(req.params.id);
-    res.send({ status: 'Account Deleted Successfully' });
+    res.send({ status: "success" });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
