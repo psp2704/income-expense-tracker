@@ -47,7 +47,7 @@ const allAccount = async (req, res, next) => {
     const accounts = await Account.find({}).populate({
       path: 'transactionData'
     });
-    res.send({ status: 'Success', data: accounts });
+    res.send({ status: 'success', data: accounts });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
@@ -84,14 +84,32 @@ const updateAccount = async (req, res, next) => {
 };
 
 // Delete account
+// Define an asynchronous function to handle the deletion of an account
 const deleteAccount = async (req, res, next) => {
   try {
+    // Attempt to find and delete the account using the provided ID
     await Account.findByIdAndDelete(req.params.id);
-    res.send({ status: "success" });
+
+    // Find a user who has the deleted account in their accounts array
+    const userWithTransactionId = await User.findOne({ accounts : { $in: [req.params.id] } });
+
+    // Filter out the deleted account ID from the user's accounts array
+    const filterUserAccounts = userWithTransactionId.accounts.filter(accId => accId.toString() !== req.params.id.toString());
+
+    // Update the user's accounts array with the filtered IDs
+    userWithTransactionId.accounts = [...filterUserAccounts];
+
+    // Save the updated user object
+    userWithTransactionId.save();
+
+    // Respond with a success message and the updated user object
+    res.json({status : 'success', user : userWithTransactionId });
   } catch (error) {
+    // If an error occurs during the deletion process, pass it to the error handling middleware
     return next(appErr(error.message, 402));
   }
 };
+
 
 module.exports = {
   createAccount,
