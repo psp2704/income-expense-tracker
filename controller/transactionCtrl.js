@@ -84,7 +84,7 @@ const deleteTransaction = async (req, res, next) => {
   try {
 
     // Find the transaction and remove it from the database
-    const transaction = await Transaction.findById(req.params.id);
+    const transaction = await Transaction.findByIdAndDelete(req.params.id);
 
     // Find the account that contains the deleted transaction
     const accountWithTransaction = await Account.findOne({ transactions: req.params.transactionId });
