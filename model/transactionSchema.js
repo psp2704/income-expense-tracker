@@ -57,6 +57,12 @@ const transactionSchema = new mongoose.Schema({
       notes : {
         type : String,
         required : true
+    },
+    
+    account : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Account',
+        required : true
     }
 }, {
     timestamps : true,

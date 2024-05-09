@@ -42,7 +42,8 @@ const accountSchema = new mongoose.Schema({
     notes : {
         type : String,
         required : true
-    }
+    },
+
 }, {
     timestamps : true,
     toJSON : {virtuals : true}
