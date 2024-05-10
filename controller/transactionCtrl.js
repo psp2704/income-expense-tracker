@@ -6,7 +6,7 @@ const { appErr } = require("../utils/appErr");
 //craete transaction
 const createTransaction = async (req, res, next) => {
   try {
-    const { name, transactionType, amount, category, notes, account } =
+    const { transactName, transactionType, amount, category, notes, account } =
       req.body;
 
     //1 find the user
@@ -22,7 +22,7 @@ const createTransaction = async (req, res, next) => {
     }
 
     const transaction = await Transaction.create({
-      name,
+      transactName,
       transactionType,
       amount,
       category,
@@ -50,7 +50,7 @@ const createTransaction = async (req, res, next) => {
 const getSingleTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findById(req.params.id)
-    res.json({ status: "success", data : transaction });
+    res.json({ status: "success", transaction : transaction });
   } catch (error) {
     return next(appErr(error.message, 402));
   }
