@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../model/userSchema");
 const { appErr } = require("../utils/appErr");
 const { generateToken } = require("../utils/generateToken");
+const Transaction = require("../model/transactionSchema");
 
 // User registration
 const userRegister = async (req, res, next) => {
@@ -79,6 +80,7 @@ const userLogin = async (req, res, next) => {
 // Get single user profile
 const getUserProfile = async (req, res) => {
   try {
+
     // Retrieve user profile using the provided token
     const user = await User.findById(req.user).populate({
       path : 'accounts',
@@ -87,6 +89,52 @@ const getUserProfile = async (req, res) => {
         model : 'Transaction'
       }
     });
+    
+    let expense = Transaction.aggregate([
+      {
+        $match: {
+          transactionType: "Expense" // Filter documents where the type is "income"
+        }
+      },
+      {
+        $group: {
+          _id: null, // Group by null to calculate sum across filtered documents
+          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+        }
+      }
+    ])
+
+    let income = Transaction.aggregate([
+      {
+        $match: {
+          transactionType: "Income" // Filter documents where the type is "income"
+        }
+      },
+      {
+        $group: {
+          _id: null, // Group by null to calculate sum across filtered documents
+          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+        }
+      }
+    ]);
+
+
+    let balance = Transaction.aggregate([
+      
+      {
+        $group: {
+          _id: null, // Group by null to calculate sum across filtered documents
+          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+        }
+      }
+    ])
+
+    user.updateOne({
+      totalExpense : expense,
+      totalIncome : income,
+      totalBalance : balance
+    })
+    
     res.json({ status: "success",  userData: user });
   } catch (error) {
     console.log(error);
