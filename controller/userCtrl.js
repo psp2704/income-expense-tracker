@@ -133,7 +133,11 @@ const getUserProfile = async (req, res) => {
       totalExpense : expense,
       totalIncome : income,
       totalBalance : balance
-    })
+    });
+
+    console.log(expense, income, balance)
+
+
     
     res.json({ status: "success",  userData: user });
   } catch (error) {

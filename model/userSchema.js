@@ -19,7 +19,22 @@ const userSchema = new mongoose.Schema ({
     accounts : [{
         type : mongoose.Schema.Types.ObjectId, 
         ref: "Account"
-    }]
+    }],
+
+    totalExpense : {
+        type : Number,
+        required : true
+    },
+
+    totalIncome : {
+        type : Number,
+        required : true
+    },
+
+    totalBalance : {
+        type : Number,
+        required : true
+    }
 }, {
     timestamps :true,
     toJSON : {virtuals : true}
