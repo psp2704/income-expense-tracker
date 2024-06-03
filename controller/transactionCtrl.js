@@ -55,22 +55,22 @@ const getSingleTransaction = async (req, res, next) => {
     return next(appErr(error.message, 402));
   }
 
-  let income = Transaction.aggregate([
-    {
-      $match: {
-        transactionType: "Income" // Filter documents where the type is "income"
-      }
-    },
-    {
-      $group: {
-        _id: null, // Group by null to calculate sum across filtered documents
-        totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
-      }
-    }
-  ]);
+  // let income = Transaction.aggregate([
+  //   {
+  //     $match: {
+  //       transactionType: "Income" // Filter documents where the type is "income"
+  //     }
+  //   },
+  //   {
+  //     $group: {
+  //       _id: null, // Group by null to calculate sum across filtered documents
+  //       totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+  //     }
+  //   }
+  // ]);
  
 
-  console.log(balance);
+  // console.log(balance);
 
 };
 

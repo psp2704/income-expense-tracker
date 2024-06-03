@@ -21,20 +21,20 @@ const userSchema = new mongoose.Schema ({
         ref: "Account"
     }],
 
-    totalExpense : {
-        type : Number,
-        required : true
-    },
+    // totalExpense : {
+    //     type : Number,
+    //     required : true
+    // },
 
-    totalIncome : {
-        type : Number,
-        required : true
-    },
+    // totalIncome : {
+    //     type : Number,
+    //     required : true
+    // },
 
-    totalBalance : {
-        type : Number,
-        required : true
-    }
+    // totalBalance : {
+    //     type : Number,
+    //     required : true
+    // }
 }, {
     timestamps :true,
     toJSON : {virtuals : true}

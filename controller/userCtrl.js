@@ -52,27 +52,45 @@ const userLogin = async (req, res, next) => {
 
     // Check if required fields are provided
     if (!email || !password) {
-      return next(appErr("All fields are required", 400));
+      return next(appErr("All fields are required", 201));
     }
 
     // Find the user by email
     const userFound = await User.findOne({ email });
 
     if (!userFound) {
-      return next(appErr("Invalid Login Credentials", 400));
+      return next(appErr("Invalid Login Credentials", 201));
     }
 
     // Compare passwords
     const passwordMatch = await bcrypt.compare(password, userFound.password);
 
     if (!passwordMatch) {
-      return next(appErr("Invalid Login Credentials", 400));
+      return next(appErr("Invalid Login Credentials", 201));
     }
+
+    // Check if required fields are provided
+    // if (!email || !password) {
+    //   return res.status(200).json({ message: "All fields are required" });
+    // }
+
+    // // Find the user by email
+    // const userFound = await User.findOne({ email });
+
+    // if (!userFound) {
+    //   return res.status(200).json({ message: "Invalid Login Credentials" });
+    // }
+
+    // // Compare passwords
+    // const passwordMatch = await bcrypt.compare(password, userFound.password);
+
+    // if (!passwordMatch) {
+    //   return res.status(200).json({ message: "Invalid Login Credentials" });
+    // }
 
     // Generate and return a token upon successful login
     return res.json({ id: userFound._id, status: "success", token: generateToken(userFound._id) });
   } catch (error) {
-    console.log(error);
     return next(appErr(error.message, 400));
   }
 };
@@ -90,52 +108,52 @@ const getUserProfile = async (req, res) => {
       }
     });
     
-    let expense = Transaction.aggregate([
-      {
-        $match: {
-          transactionType: "Expense" // Filter documents where the type is "income"
-        }
-      },
-      {
-        $group: {
-          _id: null, // Group by null to calculate sum across filtered documents
-          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
-        }
-      }
-    ])
+    // let expense = Transaction.aggregate([
+    //   {
+    //     $match: {
+    //       transactionType: "Expense" // Filter documents where the type is "income"
+    //     }
+    //   },
+    //   {
+    //     $group: {
+    //       _id: null, // Group by null to calculate sum across filtered documents
+    //       totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+    //     }
+    //   }
+    // ])
 
-    let income = Transaction.aggregate([
-      {
-        $match: {
-          transactionType: "Income" // Filter documents where the type is "income"
-        }
-      },
-      {
-        $group: {
-          _id: null, // Group by null to calculate sum across filtered documents
-          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
-        }
-      }
-    ]);
+    // let income = Transaction.aggregate([
+    //   {
+    //     $match: {
+    //       transactionType: "Income" // Filter documents where the type is "income"
+    //     }
+    //   },
+    //   {
+    //     $group: {
+    //       _id: null, // Group by null to calculate sum across filtered documents
+    //       totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+    //     }
+    //   }
+    // ]);
 
 
-    let balance = Transaction.aggregate([
+    // let balance = Transaction.aggregate([
       
-      {
-        $group: {
-          _id: null, // Group by null to calculate sum across filtered documents
-          totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
-        }
-      }
-    ])
+    //   {
+    //     $group: {
+    //       _id: null, // Group by null to calculate sum across filtered documents
+    //       totalAmount: { $sum: "$amount" } // Calculate sum of the "amount" property
+    //     }
+    //   }
+    // ])
 
-    user.updateOne({
-      totalExpense : expense,
-      totalIncome : income,
-      totalBalance : balance
-    });
+    // user.updateOne({
+    //   totalExpense : expense,
+    //   totalIncome : income,
+    //   totalBalance : balance
+    // });
 
-    console.log(expense, income, balance)
+    // console.log(expense, income, balance)
 
 
     
