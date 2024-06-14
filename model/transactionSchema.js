@@ -39,10 +39,6 @@ const transactionSchema = new mongoose.Schema({
         required : true
     },
 
-    color : {
-        type : String,
-    },
-
     createdBy : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User',
@@ -52,11 +48,6 @@ const transactionSchema = new mongoose.Schema({
     date : {
         type : Date,
         default : Date.now()
-    },
-
-      notes : {
-        type : String,
-        required : true
     },
     
     account : {
