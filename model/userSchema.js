@@ -21,10 +21,9 @@ const userSchema = new mongoose.Schema ({
         ref: "Account"
     }],
 
-    // totalExpense : {
-    //     type : Number,
-    //     required : true
-    // },
+    totalExpense : {
+        type : Number
+    },
 
     // totalIncome : {
     //     type : Number,

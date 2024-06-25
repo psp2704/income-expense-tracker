@@ -122,6 +122,16 @@ const getUserProfile = async (req, res) => {
     //   }
     // ])
 
+    let expense = Transaction.aggregate([
+      { $match: { transactionType: 'Expense' } },
+      { $group: { _id: null, totalAmount: { $sum: '$amount' } } }
+    ])
+    .then(result => {
+      result.length > 0? result[0].totalAmount : 0;
+    }).catch(error =>{
+      console.log('Error:', error);
+    })
+
     // let income = Transaction.aggregate([
     //   {
     //     $match: {
@@ -147,16 +157,16 @@ const getUserProfile = async (req, res) => {
     //   }
     // ])
 
-    // user.updateOne({
-    //   totalExpense : expense,
-    //   totalIncome : income,
-    //   totalBalance : balance
-    // });
+    user.updateOne({
+      totalExpense : expense,
+      // totalIncome : income,
+      // totalBalance : balance
+    });
 
-    // console.log(expense, income, balance)
+    await user.save(expense);
 
+    console.log( )
 
-    
     res.json({ status: "success",  userData: user });
   } catch (error) {
     console.log(error);
